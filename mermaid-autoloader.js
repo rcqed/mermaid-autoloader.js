@@ -34,7 +34,7 @@ function loadFile() {
 
                 // 动态创建并加载mermaid.js脚本
                 const mermaidScript = document.createElement('script');
-                mermaidScript.src = '/_class/docsify/mermaid/_js/mermaid.js';
+                mermaidScript.src = 'https://cdn.jsdelivr.net/npm/mermaid@10.2.4/dist/mermaid.min.js';
                 mermaidScript.onload = function () {
                     // 初始化图表
                     mermaid.init(undefined, mermaidDiv);
