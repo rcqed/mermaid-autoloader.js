@@ -35,7 +35,7 @@ gitGraph
    commit
 ```
 
-5. Open [https://rcqed.github.io/mermaid-autoloader.js/index.html?path=test.md](https://rcqed.github.io/mermaid-autoloader.js/index.html?path=test.md) to see that
+5. Open [https://rcqed.github.io/mermaid-autoloader.js/index.html?path=test.md](https://rcqed.github.io/mermaid-autoloader.js/index.html?path=./test.md) to see that
 
 lite: If you only want to add zoom and drag functionality, you can use the ```move&zoom.html```,[https://rcqed.github.io/mermaid-autoloader.js/move&zoom.html](https://rcqed.github.io/mermaid-autoloader.js/move&zoom.html)
 
