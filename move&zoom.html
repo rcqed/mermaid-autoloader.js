@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  
+    <title>Mermaid</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.2.4/dist/mermaid.min.js"></script>
+    <style>
+		html, body {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+
+
+		.mermaid {
+			position: relative;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			user-select: none;
+			cursor: move;
+		}
+
+    </style>
+    <script>
+        var mermaidDiv;
+        var isDragging = false;
+        var offset = { x: 0, y: 0 };
+
+        function loadFile() {
+            mermaidDiv = document.querySelector('.mermaid');
+            mermaidDiv.addEventListener('mousedown', startDragging);
+            mermaidDiv.addEventListener('mousemove', handleDragging);
+            mermaidDiv.addEventListener('mouseup', stopDragging);
+            mermaidDiv.addEventListener('mouseleave', stopDragging);
+            mermaidDiv.addEventListener('contextmenu', function (event) {
+                event.preventDefault(); // 阻止右键菜单弹出
+            });
+
+            // 添加事件监听器，以便在窗口大小变化时重新调整图表位置和大小
+            window.addEventListener('resize', adjustMermaid);
+
+            // 添加事件监听器，以便响应鼠标滚轮事件
+            mermaidDiv.addEventListener('wheel', handleWheel);
+
+            // 初始化图表
+            mermaid.init(undefined, '.mermaid');
+
+            // 调整图表位置和大小
+            adjustMermaid();
+        }
+
+        function startDragging(event) {
+            isDragging = true;
+            offset.x = event.clientX - mermaidDiv.offsetLeft;
+            offset.y = event.clientY - mermaidDiv.offsetTop;
+        }
+
+        function handleDragging(event) {
+            if (!isDragging) {
+                return;
+            }
+
+            var x = event.clientX - offset.x;
+            var y = event.clientY - offset.y;
+            mermaidDiv.style.left = x + 'px';
+            mermaidDiv.style.top = y + 'px';
+        }
+
+        function stopDragging() {
+            isDragging = false;
+        }
+
+        function adjustMermaid() {
+            var container = mermaidDiv.parentElement;
+            var containerWidth = container.offsetWidth;
+            var containerHeight = container.offsetHeight;
+            var mermaidWidth = mermaidDiv.offsetWidth;
+            var mermaidHeight = mermaidDiv.offsetHeight;
+            var scaleX = containerWidth / mermaidWidth;
+            var scaleY = containerHeight / mermaidHeight;
+            var scale = Math.min(scaleX, scaleY);
+
+            // 设置图表的缩放和位移样式
+            mermaidDiv.style.transform = 'scale(' + scale + ') translate(-50%, -50%)';
+            mermaidDiv.style.transformOrigin = 'top left';
+        }
+
+        function handleWheel(event) {
+            event.preventDefault(); // 阻止默认的滚轮行为
+
+            var delta = -Math.sign(event.deltaY);
+            var scaleIncrement = 0.5; // 调整缩放的增量值，可以增大或减小
+            var currentScale = getCurrentScale();
+            var newScale = currentScale + delta * scaleIncrement;
+
+            if (newScale < 0.1) {
+                newScale = 0.1;
+            }
+
+            setScale(newScale);
+        }
+
+        function getCurrentScale() {
+            var transform = window.getComputedStyle(mermaidDiv).getPropertyValue('transform');
+            var matrix = transform.match(/^matrix\((.+)\)$/);
+
+            if (matrix) {
+                var values = matrix[1].split(',');
+                return parseFloat(values[0]);
+            }
+
+            return 1;
+        }
+
+        function setScale(scale) {
+            mermaidDiv.style.transform = 'scale(' + scale + ') translate(-50%, -50%)';
+        }
+    </script>
+</head>
+<body onload="loadFile()">
+    <div class="mermaid">
+        gitGraph
+           commit id: "230715" type: HIGHLIGHT tag: "提交招标版施工图"
+           commit id: "Beta"
+           branch develop
+           checkout develop
+           commit id: "Beta"
+           commit id: "123"  type: REVERSE
+    </div>
+</body>
+</html>
