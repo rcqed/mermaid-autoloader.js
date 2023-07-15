@@ -39,4 +39,4 @@ gitGraph
 
 lite: If you only want to add zoom and drag functionality, you can use the ```move&zoom.html```
 
-## thanks for [mermaid](https://github.com/mermaid-js/mermaid)
+## thanks for [mermaid](https://github.com/mermaid-js/mermaid)!!!
